@@ -17,17 +17,27 @@ namespace LoadDwVenta.Data.Services
             this.northwindContext = northwindContext;
         }
 
-        public async Task<OperationResult> LoadCategory(DimCategory dimCategory)
+        public async Task<OperationResult> LoadCategory()
         {
             OperationResult operation = new OperationResult();
             try
             {
+                var categories = northwindContext.Categories.Select(emp => new DimCategory()
+                {
+                    CategoryId = emp.CategoryId,
+                    CategoryName = emp.CategoryName,
+                    Description = emp.Description
+                    
+                }).ToList();
+                await dwhVentasContext.DimCategories.AddRangeAsync(categories);
+                await dwhVentasContext.SaveChangesAsync();
+                operation.Success = true;
 
             }
             catch (Exception)
             {
                 operation.Success = false;
-                operation.Message = $"Error cargando la dimesion de producto";
+                operation.Message = $"Error cargando la dimesion de categorias";
             }
 
             return operation;

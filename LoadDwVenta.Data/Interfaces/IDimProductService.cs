@@ -1,5 +1,4 @@
 ﻿using LoadDwVenta.Data.Core;
-using LoadDwVenta.Data.Entities.DwVentas;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace LoadDwVenta.Data.Interfaces
 {
-    public interface IDimCategoryService
+    public interface IDimProductService
     {
-        Task<OperationResult> LoadCategory();
+        Task<OperationResult> LoadProducts();
     }
 }

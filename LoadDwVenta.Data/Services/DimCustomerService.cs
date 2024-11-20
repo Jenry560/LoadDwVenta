@@ -3,43 +3,47 @@ using LoadDwVenta.Data.Contexts.Northwind;
 using LoadDwVenta.Data.Core;
 using LoadDwVenta.Data.Entities.DwVentas;
 using LoadDwVenta.Data.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace LoadDwVenta.Data.Services
 {
-    public class DimEmployeeService: IDimEmployeeService
+    public class DimCustomerService : IDimCustomerService
     {
         private readonly DwhVentasContext dwhVentasContext;
         private readonly NorthwindContext northwindContext;
 
-        public DimEmployeeService(DwhVentasContext dwhVentasContext, NorthwindContext northwindContext)
+        public DimCustomerService(DwhVentasContext dwhVentasContext, NorthwindContext northwindContext)
         {
             this.dwhVentasContext = dwhVentasContext;
             this.northwindContext = northwindContext;
         }
 
-        public async Task<OperationResult> LoadEmployees()
+        public async Task<OperationResult> LoadCustomers()
         {
             OperationResult operation = new OperationResult();
             try
             {
-                var employees = northwindContext.Employees.Select(emp => new DimEmployee()
+                var customers = northwindContext.Customers.Select(cus => new DimCustomer()
                 {
-                    EmployeeId = emp.EmployeeId,
-                    LastName = emp.LastName,
-                    FirstName = emp.FirstName,
+                   CustomerId = cus.CustomerId,
+                   ContactName = cus.ContactName,
 
                 }).ToList();
-
-                await dwhVentasContext.DimEmployees.AddRangeAsync(employees);
+                await dwhVentasContext.DimCustomers.AddRangeAsync(customers);
                 await dwhVentasContext.SaveChangesAsync();
-                operation.Success =true;
+                operation.Success = true;
+
             }
             catch (Exception)
             {
                 operation.Success = false;
-                operation.Message = $"Error cargando la dimesion de empleados";
+                operation.Message = $"Error cargando la dimesion de customers";
             }
-            
+
             return operation;
         }
     }

@@ -3,43 +3,48 @@ using LoadDwVenta.Data.Contexts.Northwind;
 using LoadDwVenta.Data.Core;
 using LoadDwVenta.Data.Entities.DwVentas;
 using LoadDwVenta.Data.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace LoadDwVenta.Data.Services
 {
-    public class DimEmployeeService: IDimEmployeeService
+    public class DimProductService : IDimProductService
     {
         private readonly DwhVentasContext dwhVentasContext;
         private readonly NorthwindContext northwindContext;
 
-        public DimEmployeeService(DwhVentasContext dwhVentasContext, NorthwindContext northwindContext)
+        public DimProductService(DwhVentasContext dwhVentasContext, NorthwindContext northwindContext)
         {
             this.dwhVentasContext = dwhVentasContext;
             this.northwindContext = northwindContext;
         }
 
-        public async Task<OperationResult> LoadEmployees()
+        public async Task<OperationResult> LoadProducts()
         {
             OperationResult operation = new OperationResult();
             try
             {
-                var employees = northwindContext.Employees.Select(emp => new DimEmployee()
+                var products = northwindContext.Products.Select(pro => new DimProduct()
                 {
-                    EmployeeId = emp.EmployeeId,
-                    LastName = emp.LastName,
-                    FirstName = emp.FirstName,
-
+                    ProductId = pro.ProductId,
+                    CategoryId = pro.CategoryId,
+                    ProductName = pro.ProductName,
+                    UnitPrice = pro.UnitPrice
                 }).ToList();
 
-                await dwhVentasContext.DimEmployees.AddRangeAsync(employees);
+                await dwhVentasContext.DimProducts.AddRangeAsync(products);
                 await dwhVentasContext.SaveChangesAsync();
-                operation.Success =true;
+                operation.Success = true;
             }
             catch (Exception)
             {
                 operation.Success = false;
-                operation.Message = $"Error cargando la dimesion de empleados";
+                operation.Message = $"Error cargando la dimesion de productos";
             }
-            
+
             return operation;
         }
     }

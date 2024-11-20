@@ -1,4 +1,5 @@
 using LoadDwVenta.Data.Interfaces;
+using LoadDwVenta.Data.Services;
 
 namespace LoadDwVenta.WorkerServices
 {
@@ -15,33 +16,39 @@ namespace LoadDwVenta.WorkerServices
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
         {
-             while (!stoppingToken.IsCancellationRequested)
-    {
-        if (_logger.IsEnabled(LogLevel.Information))
-        {
-            _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
-        }
-
-        try
-        {
-            using (var scope = _serviceScopeFactory.CreateScope())
+            while (!stoppingToken.IsCancellationRequested)
             {
-                var databaseService = scope.ServiceProvider.GetRequiredService<IDimEmployeeService>();
-                var result = await databaseService.LoadEmployees();
-                if (result.Success)
+                if (_logger.IsEnabled(LogLevel.Information))
                 {
-                    return;
+                    _logger.LogInformation("Worker running at: {time}", DateTimeOffset.Now);
                 }
 
-            }
-        }
-        catch (Exception ex)
-        {
-            _logger.LogError(ex, "Error executing worker");
-        }
+                try
+                {
+                    using (var scope = _serviceScopeFactory.CreateScope())
+                    {
+                        var databaseService = scope.ServiceProvider.GetRequiredService<DwhLoadService>();
+                        var result = await databaseService.LoadDwhVentas();
+                        if (result.Success)
+                        {
+                            _logger.LogInformation(result.Message);
+                        }
+                        else
+                        {
+                            _logger.LogError(result.Message);
+                        }
+                        return;
 
-        await Task.Delay(1000, stoppingToken);
-    }
+
+                    }
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, "Error executing worker");
+                }
+
+                await Task.Delay(1000, stoppingToken);
+            }
         }
     }
 }
