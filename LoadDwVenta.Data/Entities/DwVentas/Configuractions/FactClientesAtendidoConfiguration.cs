@@ -9,11 +9,11 @@ namespace LoadDwVenta.Data.Entities.DwVentas.Configuractions
     {
         public void Configure(EntityTypeBuilder<FactClientesAtendido> entity)
         {
-            entity.HasKey(e => e.ClienteAtentidoId).HasName("PK__FactClie__C7E58F3CBF4E87A4");
+            entity.HasKey(e => e.EmployeeID).HasName("PK__FactClie__C7E58F3CBF4E87A4");
 
-            entity.Property(e => e.ClienteAtentidoId)
+            entity.Property(e => e.EmployeeID)
                 .ValueGeneratedNever()
-                .HasColumnName("ClienteAtentidoID");
+                .HasColumnName("EmployeeID");
 
             OnConfigurePartial(entity);
         }

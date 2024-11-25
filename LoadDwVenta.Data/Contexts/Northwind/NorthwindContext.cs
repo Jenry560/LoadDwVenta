@@ -43,6 +43,9 @@ public partial class NorthwindContext : DbContext
     public DbSet<VentasTotalesPerido> VentasTotalesPeridos { get; set; }
 
     public DbSet<VentasTransportistum> VentasTransportista { get; set; }
+
+
+    public  DbSet<OrdenesVentasTotale> OrdenesVentasTotales { get; set; }
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
           => optionsBuilder.UseSqlServer("Data Source=DESKTOP-NDORDVA\\SQLEXPRESS;Initial Catalog=Northwind;Integrated Security=True;Encrypt=True;TrustServerCertificate=True");
@@ -299,6 +302,23 @@ public partial class NorthwindContext : DbContext
             entity.Property(e => e.TotalVendido)
                 .HasColumnType("money")
                 .HasColumnName("totalVendido");
+        });
+
+        modelBuilder.Entity<OrdenesVentasTotale>(entity =>
+        {
+            entity
+                .HasNoKey()
+                .ToView("OrdenesVentasTotales", "DWH");
+
+            entity.Property(e => e.CustomerId)
+                .HasMaxLength(5)
+                .IsFixedLength()
+                .HasColumnName("CustomerID");
+            entity.Property(e => e.EmployeeId).HasColumnName("EmployeeID");
+            entity.Property(e => e.OrderDate).HasColumnType("datetime");
+            entity.Property(e => e.ShipCity).HasMaxLength(15);
+            entity.Property(e => e.ShipCountry).HasMaxLength(15);
+            entity.Property(e => e.TotalVentas).HasColumnType("money");
         });
 
         OnModelCreatingPartial(modelBuilder);

@@ -1,12 +1,12 @@
 ﻿{
    "CodeGenerationMode": 4,
-   "ContextClassName": "NorthwindContext",
+   "ContextClassName": "NorthwindContexts",
    "ContextNamespace": null,
    "FilterSchemas": false,
-   "IncludeConnectionString": true,
+   "IncludeConnectionString": false,
    "ModelNamespace": "Entities",
    "OutputContextPath": "Context",
-   "OutputPath": "ModelsDwVentas",
+   "OutputPath": "",
    "PreserveCasingWithRegex": true,
    "ProjectRootNamespace": "LoadDwVenta.DatabaseObjects",
    "Schemas": null,
@@ -15,44 +15,8 @@
    "T4TemplatePath": null,
    "Tables": [
       {
-         "Name": "[dbo].[DimCategories]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[DimCustomers]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[DimEmployees]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[DimProducts]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[DimShippers]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[FactClientesAtendidos]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[FactOrders]",
-         "ObjectType": 0
-      },
-      {
-         "Name": "[dbo].[CleanData]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[dbo].[LoadCustomers]",
-         "ObjectType": 1
-      },
-      {
-         "Name": "[dbo].[LoadEmployee]",
-         "ObjectType": 1
+         "Name": "[DWH].[OrdenesVentasTotales]",
+         "ObjectType": 3
       }
    ],
    "UiHint": null,
@@ -61,7 +25,7 @@
    "UseBoolPropertiesWithoutDefaultSql": false,
    "UseDatabaseNames": false,
    "UseDateOnlyTimeOnly": true,
-   "UseDbContextSplitting": true,
+   "UseDbContextSplitting": false,
    "UseDecimalDataAnnotationForSprocResult": true,
    "UseFluentApiOnly": true,
    "UseHandleBars": false,
